@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1423065756 source:e:\project\project\generatedmusicmidi\main.cpp
+	<iostream>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+
