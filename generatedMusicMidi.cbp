@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -32,7 +33,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/fTreeGenSys.h" />
+		<Unit filename="include/pitchlist.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/fTreeGenSys.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

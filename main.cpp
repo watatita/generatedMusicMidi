@@ -2,20 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#define NOTE_C4  60
-#define NOTE_C4shp  61
-#define NOTE_D4  62
-#define NOTE_D4shp  63
-#define NOTE_E4  64
-#define NOTE_F4  65
-#define NOTE_F4shp  66
-#define NOTE_G4  67
-#define NOTE_G4shp  68
-#define NOTE_A4  69
-#define NOTE_A4shp  70
-#define NOTE_B4  71
-#define NOTE_C5  72
+#include <pitchlist.h>
+#include <fTreeGenSys.h>
 
 
 using namespace std;
@@ -36,15 +24,6 @@ unsigned char* fileStream;
 int filePosition=0;
 int trStartPos;
 int trackStartPos[32];
-
-//void gmWriteMidiHeader(FILE* ff);
-//void gmWriteTrackHeader(FILE* ff);
-//void gmWriteTimeSignature(FILE* ff,int tsNumerator,int tsDenumerator,
-//                          int metronomeClick=24,int numberOfNotes=8);
-//
-//void gmWriteSound(FILE* ff,int channel,int pitch,int velocity,int lenght);
-//void gmWriteSystem(FILE* ff);
-//void gmWriteEndOfTrack(FILE* ff);
 
 void gmBufferMidiHeader(unsigned char* ff,int midiformat,int miditracks,int mididiv);
 void gmBufferTrackHeader(unsigned char* ff);
@@ -72,9 +51,18 @@ int main()
     FILE* fileMidi=fopen("test.mid","wb");
     fileStream=(unsigned char*) malloc(0x3ffff);
 
+    fTreeGenSys lsys;
+
+    lsys.lRegisterSymbol('F',"FF");
+    lsys.lRegisterSymbol('X',"F[+FX][-FX]");
+    lsys.lSetStart("[+X][-X]");
+
+    lsys.lGenerateLSystem(3);
+
+
     gmBufferMidiHeader(fileStream,1,1,480);
     gmBufferTrackHeader(fileStream);
-//    gmBufferCopyright(fileStream,"(C) Watatita micro_field");
+    gmBufferCopyright(fileStream,"(C) Watatita micro_field");
     gmBufferTimeSignature(fileStream,4,2);
     gmBufferKeySignature(fileStream,1,0);
     gmBufferMusicNote(fileStream,0,NOTE_C4,80,480);
