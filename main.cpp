@@ -4,11 +4,16 @@
 #include <stdlib.h>
 
 #define NOTE_C4  60
+#define NOTE_C4shp  61
 #define NOTE_D4  62
+#define NOTE_D4shp  63
 #define NOTE_E4  64
 #define NOTE_F4  65
+#define NOTE_F4shp  66
 #define NOTE_G4  67
+#define NOTE_G4shp  68
 #define NOTE_A4  69
+#define NOTE_A4shp  70
 #define NOTE_B4  71
 #define NOTE_C5  72
 
@@ -46,6 +51,8 @@ void gmBufferTrackHeader(unsigned char* ff);
 
 //ff 02
 void gmBufferCopyright(unsigned char* ff,const char* copyrightText);
+//ff 03
+void gmBufferTitleName(unsigned char* ff,const char* titleName);
 //ff 2f
 void gmBufferEndOfTrack(unsigned char* ff);
 //ff 51
@@ -118,6 +125,8 @@ void gmBufferTrackHeader(unsigned char* ff)
     ff[filePosition]=0; filePosition++;
     ff[filePosition]=0; filePosition++;
     trStartPos=filePosition;
+    //first delta time
+    ff[filePosition]=0; filePosition++;
 }
 
 //ff 02
@@ -132,6 +141,22 @@ void gmBufferCopyright(unsigned char* ff,const char* copyrightText)
     for(i=0;i<charlen;i++)
     {
         ff[filePosition]=copyrightText[i]; filePosition++;
+    }
+    //delta time
+    ff[filePosition]=0; filePosition++;
+}
+//ff 03
+void gmBufferTitleName(unsigned char* ff,const char* titleName)
+{
+    int charlen=strlen(titleName);
+    int i;
+
+    ff[filePosition]=0xff; filePosition++;
+    ff[filePosition]=0x03; filePosition++;
+    ff[filePosition]=charlen; filePosition++;
+    for(i=0;i<charlen;i++)
+    {
+        ff[filePosition]=titleName[i]; filePosition++;
     }
     //delta time
     ff[filePosition]=0; filePosition++;
