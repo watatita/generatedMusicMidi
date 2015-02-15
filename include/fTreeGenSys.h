@@ -2,7 +2,8 @@
 #define FTREEGENSYS_H
 
 #include <irrlicht.h>
-#define _MAX_AXIOM_LENGHT_  0x3ffff
+#include <pitchlist.h>
+#define _MAX_AXIOM_LENGHT_  0xffff
 
 using namespace irr;
 
@@ -24,7 +25,12 @@ class fTreeGenSys
         void lSetAngle(f32 degree);
         void lGenerateLSystem(u32 countLoop);
 
+        char lAxiomSuccessor[_MAX_AXIOM_LENGHT_];   //generated axiom
+        char lAxiomPredecessor[_MAX_AXIOM_LENGHT_];
+        u32 lAxSuccessorCount;
 
+        array<s32> lStackPitch;
+        s32 activePitch;
 
     protected:
     private:
@@ -38,15 +44,16 @@ class fTreeGenSys
         vector3df activepos;
         f32 lAngleIncrement;
 
+
+
         s32 lCharToIndex(char symbol);
         void lAddAxiomSuccessor(char symbol);
         void lSwap_axiom();
         void lReset_axiom_successor();
         void lReset_axiom_predecessor();
 
-        char lAxiomPredecessor[_MAX_AXIOM_LENGHT_];
-        char lAxiomSuccessor[_MAX_AXIOM_LENGHT_];   //generated axiom
-        u32 lAxSuccessorCount;
+
+
         char lReplace[27][64];
         bool lSymbolRegistered[27];
 };

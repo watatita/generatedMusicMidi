@@ -10,6 +10,7 @@ using namespace irr::gui;
 fTreeGenSys::fTreeGenSys()
 {
     //ctor
+    activePitch=NOTE_C4;
 }
 
 fTreeGenSys::~fTreeGenSys()

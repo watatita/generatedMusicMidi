@@ -7,6 +7,7 @@
 
 
 using namespace std;
+using namespace irr::core;
 
 union VI32
 {
@@ -20,6 +21,14 @@ union VI16
     unsigned char b[2];
 }var16;
 
+char noteinterval[]={NOTE_C4,
+                     NOTE_D4,
+                     NOTE_E4,
+                     NOTE_F4,
+                     NOTE_G4,
+                     NOTE_A4,
+                     NOTE_B4,
+                     NOTE_C5};
 unsigned char* fileStream;
 int filePosition=0;
 int trStartPos;
@@ -55,21 +64,61 @@ int main()
 
     lsys.lRegisterSymbol('F',"FF");
     lsys.lRegisterSymbol('X',"F[+FX][-FX]");
-    lsys.lSetStart("[+X][-X]");
-
-    lsys.lGenerateLSystem(3);
-
+    lsys.lSetStart("F[+X][-X]");
 
     gmBufferMidiHeader(fileStream,1,1,480);
     gmBufferTrackHeader(fileStream);
     gmBufferCopyright(fileStream,"(C) Watatita micro_field");
     gmBufferTimeSignature(fileStream,4,2);
     gmBufferKeySignature(fileStream,1,0);
-    gmBufferMusicNote(fileStream,0,NOTE_C4,80,480);
-    gmBufferMusicNote(fileStream,0,NOTE_D4,80,480);
-    gmBufferMusicNote(fileStream,0,NOTE_E4,80,480);
-    gmBufferMusicNote(fileStream,0,NOTE_D4,80,480);
-    gmBufferMusicNote(fileStream,0,NOTE_C4,80,960);
+
+/*
+    lsys.lGenerateLSystem(3);
+    for(u32 i=0;i<15;i++)
+    {
+        printf("%c",lsys.lAxiomPredecessor[i]);
+    }
+    printf("\n");
+
+    for(u32 i=0;i<5;i++)
+    {
+        switch(lsys.lAxiomPredecessor[i])
+        {
+        case '[':
+            lsys.lStackPitch.push_back(lsys.activePitch);
+            break;
+        case ']':
+            lsys.activePitch=lsys.lStackPitch.getLast();
+            lsys.lStackPitch.erase(lsys.lStackPitch.size()-1);
+            break;
+        case '+':
+            lsys.activePitch++;
+            break;
+        case '-':
+            lsys.activePitch--;
+            break;
+        case 'F':
+            gmBufferMusicNote(fileStream,0,lsys.activePitch,80,480);
+            break;
+        default:
+            break;
+        }
+    }
+*/
+
+
+    gmBufferMusicNote(fileStream,0,NOTE_B5,80,480);
+    gmBufferMusicNote(fileStream,0,NOTE_A5,80,480);
+    gmBufferMusicNote(fileStream,0,NOTE_D6,80,480);
+    gmBufferMusicNote(fileStream,0,NOTE_B5,80,480);
+
+    gmBufferMusicNote(fileStream,0,NOTE_A5,80,480);
+    gmBufferMusicNote(fileStream,0,NOTE_G5,80,480);
+    gmBufferMusicNote(fileStream,0,NOTE_F5shp,80,240);
+    gmBufferMusicNote(fileStream,0,NOTE_G5,80,240);
+    gmBufferMusicNote(fileStream,0,NOTE_A5,80,480);
+
+
     gmBufferEndOfTrack(fileStream);
     gmFinalize(fileMidi,fileStream);
 
