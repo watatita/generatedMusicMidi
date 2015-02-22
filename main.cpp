@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pitchlist.h>
-#include <fTreeGenSys.h>
+#include <fLSys.h>
 
 
 using namespace std;
@@ -60,11 +60,18 @@ int main()
     FILE* fileMidi=fopen("test.mid","wb");
     fileStream=(unsigned char*) malloc(0x3ffff);
 
-    fTreeGenSys lsys;
+    fLSys lsys;
 
     lsys.lRegisterSymbol('F',"FF");
     lsys.lRegisterSymbol('X',"F[+FX][-FX]");
     lsys.lSetStart("F[+X][-X]");
+    lsys.lGenerateLSystem(3);
+    s32 ccountchar=lsys.lGetAxiomCount();
+    for(u32 i=0;i<ccountchar;i++)
+    {
+        printf("%c",lsys.lGetAxiom(i));
+    }
+    printf("\n");
 
     gmBufferMidiHeader(fileStream,1,1,480);
     gmBufferTrackHeader(fileStream);
@@ -73,12 +80,6 @@ int main()
     gmBufferKeySignature(fileStream,1,0);
 
 /*
-    lsys.lGenerateLSystem(3);
-    for(u32 i=0;i<15;i++)
-    {
-        printf("%c",lsys.lAxiomPredecessor[i]);
-    }
-    printf("\n");
 
     for(u32 i=0;i<5;i++)
     {
