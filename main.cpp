@@ -57,6 +57,9 @@ void gmFinalize(FILE* gmfile,unsigned char* ff);
 
 int main()
 {
+    u32 activePitch=NOTE_C4;
+    array<u32> lStackPitch;
+
     FILE* fileMidi=fopen("test.mid","wb");
     fileStream=(unsigned char*) malloc(0x3ffff);
 
@@ -79,45 +82,43 @@ int main()
     gmBufferTimeSignature(fileStream,4,2);
     gmBufferKeySignature(fileStream,1,0);
 
-/*
-
-    for(u32 i=0;i<5;i++)
+    for(u32 i=0;i<ccountchar;i++)
     {
-        switch(lsys.lAxiomPredecessor[i])
+        switch(lsys.lGetAxiom(i))
         {
         case '[':
-            lsys.lStackPitch.push_back(lsys.activePitch);
+            lStackPitch.push_back(activePitch);
             break;
         case ']':
-            lsys.activePitch=lsys.lStackPitch.getLast();
-            lsys.lStackPitch.erase(lsys.lStackPitch.size()-1);
+            activePitch=lStackPitch.getLast();
+            lStackPitch.erase(lStackPitch.size()-1);
             break;
         case '+':
-            lsys.activePitch++;
+            activePitch++;
             break;
         case '-':
-            lsys.activePitch--;
+            activePitch--;
             break;
         case 'F':
-            gmBufferMusicNote(fileStream,0,lsys.activePitch,80,480);
+            gmBufferMusicNote(fileStream,0,activePitch,80,480);
             break;
         default:
             break;
         }
     }
-*/
 
 
-    gmBufferMusicNote(fileStream,0,NOTE_B5,80,480);
-    gmBufferMusicNote(fileStream,0,NOTE_A5,80,480);
-    gmBufferMusicNote(fileStream,0,NOTE_D6,80,480);
-    gmBufferMusicNote(fileStream,0,NOTE_B5,80,480);
 
-    gmBufferMusicNote(fileStream,0,NOTE_A5,80,480);
-    gmBufferMusicNote(fileStream,0,NOTE_G5,80,480);
-    gmBufferMusicNote(fileStream,0,NOTE_F5shp,80,240);
-    gmBufferMusicNote(fileStream,0,NOTE_G5,80,240);
-    gmBufferMusicNote(fileStream,0,NOTE_A5,80,480);
+//    gmBufferMusicNote(fileStream,0,NOTE_B5,80,480);
+//    gmBufferMusicNote(fileStream,0,NOTE_A5,80,480);
+//    gmBufferMusicNote(fileStream,0,NOTE_D6,80,480);
+//    gmBufferMusicNote(fileStream,0,NOTE_B5,80,480);
+//
+//    gmBufferMusicNote(fileStream,0,NOTE_A5,80,480);
+//    gmBufferMusicNote(fileStream,0,NOTE_G5,80,480);
+//    gmBufferMusicNote(fileStream,0,NOTE_F5shp,80,240);
+//    gmBufferMusicNote(fileStream,0,NOTE_G5,80,240);
+//    gmBufferMusicNote(fileStream,0,NOTE_A5,80,480);
 
 
     gmBufferEndOfTrack(fileStream);
